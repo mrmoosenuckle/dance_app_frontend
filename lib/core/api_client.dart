@@ -38,6 +38,10 @@ class ApiClient {
     return _decode(res);
   }
 
+  Future<void> delete(String path) async {
+    await _send(() => _http.delete(_uri(path)));
+  }
+
   Future<http.Response> _send(Future<http.Response> Function() request) async {
     try {
       final res = await request();

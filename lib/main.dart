@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'core/api_client.dart';
 import 'core/phone_frame.dart';
 import 'features/children/children_repository.dart';
+import 'features/competitions/competitions_repository.dart';
+import 'features/dances/dances_repository.dart';
 import 'features/children/landing_page.dart';
 
 void main() => runApp(const App());
@@ -18,7 +20,11 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorSchemeSeed: Colors.deepPurple, useMaterial3: true),
       builder: (context, child) => PhoneFrame(child: child!),
-      home: LandingPage(repository: ChildrenRepository(api)),
+      home: LandingPage(
+        repository: ChildrenRepository(api),
+        dancesRepository: DancesRepository(api),
+        competitionsRepository: CompetitionsRepository(api),
+      ),
     );
   }
 }

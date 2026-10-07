@@ -1,7 +1,8 @@
 class Child {
+  final String id;
   final String name;
-  const Child({required this.name});
+  const Child({required this.id, required this.name});
 
   factory Child.fromJson(Map<String, dynamic> json) =>
-      Child(name: json['name'] as String);
+      Child(id: json['id'].toString(), name: json['name'] as String);
 }
