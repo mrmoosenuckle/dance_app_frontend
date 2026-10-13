@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ApiException implements Exception {
@@ -12,13 +13,18 @@ class ApiException implements Exception {
 
 /// Shared HTTP client. All endpoints are relative to [baseUrl].
 class ApiClient {
-  static const String defaultBaseUrl = 'http://localhost:3000/api';
+  static final String defaultBaseUrl = kIsWeb
+      ? Uri.base
+            .replace(port: 3000, path: '/api', query: null, fragment: null)
+            .toString()
+      : 'http://localhost:3000/api';
 
   final String baseUrl;
   final http.Client _http;
 
-  ApiClient({this.baseUrl = defaultBaseUrl, http.Client? client})
-    : _http = client ?? http.Client();
+  ApiClient({String? baseUrl, http.Client? client})
+    : baseUrl = baseUrl ?? defaultBaseUrl,
+      _http = client ?? http.Client();
 
   Uri _uri(String path) => Uri.parse('$baseUrl$path');
 
