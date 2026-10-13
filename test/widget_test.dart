@@ -218,7 +218,7 @@ void main() {
       if (req.url.path == '/api/children/1/dances') {
         return http.Response(
           '[{"id":"d1","name":"One of a Kind","category":"Solo - Modern",'
-          '"durationSeconds":90,"children":[]}]',
+          '"danceType":"Solo","durationSeconds":90,"children":[]}]',
           200,
         );
       }
@@ -251,6 +251,7 @@ void main() {
     expect(find.byType(Table), findsOneWidget);
     expect(find.text('One of a Kind'), findsOneWidget);
     expect(find.text('Solo - Modern'), findsOneWidget);
+    expect(find.text('Solo'), findsOneWidget);
     expect(find.text('1:30'), findsOneWidget);
 
     await tester.tap(find.text('Add dance'));
@@ -260,14 +261,22 @@ void main() {
     await tester.enterText(fields.at(0), 'Swan Lake');
     await tester.enterText(fields.at(1), 'Ballet');
     await tester.enterText(fields.at(2), '120');
+    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Solo').last);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Oscar Sullivan'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Oscar Sullivan'));
+    await tester.ensureVisible(find.text('Save'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
     expect(url?.path, '/api/dances');
     expect(
       body,
-      '{"name":"Swan Lake","category":"Ballet","durationSeconds":120,'
+      '{"name":"Swan Lake","category":"Ballet","danceType":"Solo","durationSeconds":120,'
       '"childIds":["1","2"]}',
     );
     expect(find.text('Dance added'), findsOneWidget);

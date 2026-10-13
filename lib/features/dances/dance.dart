@@ -2,12 +2,14 @@ class Dance {
   final String id;
   final String name;
   final String category;
+  final String danceType;
   final int durationSeconds;
 
   const Dance({
     required this.id,
     required this.name,
     required this.category,
+    required this.danceType,
     required this.durationSeconds,
   });
 
@@ -15,6 +17,7 @@ class Dance {
     id: json['id'].toString(),
     name: json['name'] as String,
     category: (json['category'] ?? '') as String,
+    danceType: (json['danceType'] ?? '') as String,
     durationSeconds: (json['durationSeconds'] ?? 0) as int,
   );
 

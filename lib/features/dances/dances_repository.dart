@@ -20,11 +20,13 @@ class DancesRepository {
   Future<void> addDance({
     required String name,
     required String category,
+    required String danceType,
     required int durationSeconds,
     required List<String> childIds,
   }) => _api.post(_path, {
     'name': name,
     'category': category,
+    'danceType': danceType,
     'durationSeconds': durationSeconds,
     'childIds': childIds,
   });

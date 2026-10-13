@@ -25,6 +25,7 @@ class _AddDancePageState extends State<AddDancePage> {
   final _name = TextEditingController();
   final _category = TextEditingController();
   final _duration = TextEditingController();
+  String? _danceType;
   List<Child> _children = [];
   late final Set<String> _selectedIds = {widget.child.id};
   bool _submitting = false;
@@ -67,6 +68,7 @@ class _AddDancePageState extends State<AddDancePage> {
       await widget.dancesRepository.addDance(
         name: _name.text.trim(),
         category: _category.text.trim(),
+        danceType: _danceType!,
         durationSeconds: int.parse(_duration.text.trim()),
         childIds: _selectedIds.toList(),
       );
@@ -113,6 +115,22 @@ class _AddDancePageState extends State<AddDancePage> {
                   labelText: 'Category',
                   border: OutlineInputBorder(),
                 ),
+                validator: _required,
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                initialValue: _danceType,
+                decoration: const InputDecoration(
+                  labelText: 'Dance type',
+                  border: OutlineInputBorder(),
+                ),
+                items: const [
+                  DropdownMenuItem(value: 'Solo', child: Text('Solo')),
+                  DropdownMenuItem(value: 'Duet', child: Text('Duet')),
+                  DropdownMenuItem(value: 'Trio', child: Text('Trio')),
+                  DropdownMenuItem(value: 'Troupe', child: Text('Troupe')),
+                ],
+                onChanged: (value) => setState(() => _danceType = value),
                 validator: _required,
               ),
               const SizedBox(height: 16),

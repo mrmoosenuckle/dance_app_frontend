@@ -95,15 +95,16 @@ class _DancesPageState extends State<DancesPage> {
       columnWidths: const {
         0: FlexColumnWidth(2),
         1: FlexColumnWidth(2),
-        2: FixedColumnWidth(64),
+        2: FlexColumnWidth(2),
+        3: FixedColumnWidth(64),
       },
       border: TableBorder(
         horizontalInside: BorderSide(color: Theme.of(context).dividerColor),
       ),
       children: [
-        _row(const ['Name', 'Category', 'Time'], header: true),
+        _row(const ['Name', 'Category', 'Type', 'Time'], header: true),
         for (final d in _dances)
-          _row([d.name, d.category, d.formattedDuration]),
+          _row([d.name, d.category, d.danceType, d.formattedDuration]),
       ],
     );
   }
