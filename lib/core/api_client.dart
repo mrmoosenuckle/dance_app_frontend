@@ -13,11 +13,14 @@ class ApiException implements Exception {
 
 /// Shared HTTP client. All endpoints are relative to [baseUrl].
 class ApiClient {
+  static const bool _useApiProxy = bool.fromEnvironment('API_USE_PROXY');
+
   static final String defaultBaseUrl = kIsWeb
       ? Uri.base
-            .replace(port: 3000, path: '/api', query: null, fragment: null)
+            .resolve('/api')
+            .replace(port: _useApiProxy ? Uri.base.port : 3000)
             .toString()
-      : 'http://localhost:3000/api';
+      : 'http://192.168.127.213:3000/api';
 
   final String baseUrl;
   final http.Client _http;

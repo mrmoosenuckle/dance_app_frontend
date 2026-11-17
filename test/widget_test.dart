@@ -9,6 +9,43 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
 void main() {
+  test('native API requests use the NAS by default', () async {
+    final client = MockClient((req) async {
+      expect(req.url, Uri.parse('http://192.168.127.213:3000/api/children'));
+      return http.Response('{}', 200);
+    });
+
+    await ApiClient(client: client).get('/children');
+  }, testOn: 'vm');
+
+  test(
+    'proxied web API requests use the frontend origin',
+    () async {
+      final client = MockClient((req) async {
+        expect(req.url, Uri.base.resolve('/api/children'));
+        return http.Response('{}', 200);
+      });
+
+      await ApiClient(client: client).get('/children');
+    },
+    testOn: 'browser',
+    skip: !const bool.fromEnvironment('API_USE_PROXY'),
+  );
+
+  test(
+    'unproxied web API requests use port 3000',
+    () async {
+      final client = MockClient((req) async {
+        expect(req.url, Uri.base.resolve('/api/children').replace(port: 3000));
+        return http.Response('{}', 200);
+      });
+
+      await ApiClient(client: client).get('/children');
+    },
+    testOn: 'browser',
+    skip: const bool.fromEnvironment('API_USE_PROXY'),
+  );
+
   testWidgets('prompts for name when none exists, then shows it', (
     tester,
   ) async {

@@ -9,8 +9,13 @@ docker build -t dance-app-frontend .
 docker run --rm -p 8080:80 dance-app-frontend
 ```
 
-The web application derives its API URL from the browser's current host and
-uses port `3000` with the `/api` path. For example, opening
-`http://203.0.113.10:8080` calls `http://203.0.113.10:3000/api`. Deploy the API
-on port `3000` at the same host and with the same HTTP/HTTPS scheme as the
-frontend.
+The production web image sends `/api/` requests to Nginx on the same origin.
+Nginx forwards them to `http://192.168.127.213:3000`, where the NAS exposes the
+API. The frontend container must be able to reach that address and port.
+
+When running the web app outside the Docker image, it uses port `3000` on the
+browser's current host by default. This requires the API to allow the web
+app's origin via CORS.
+
+Non-web builds use `http://192.168.127.213:3000/api` by default, so the device
+must be able to reach the NAS on port `3000`.

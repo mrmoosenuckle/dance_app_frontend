@@ -6,7 +6,7 @@ COPY pubspec.* ./
 RUN flutter pub get
 
 COPY . .
-RUN flutter build web --release
+RUN flutter build web --release --dart-define=API_USE_PROXY=true
 
 FROM nginx:1.27-alpine
 
